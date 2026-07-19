@@ -1,0 +1,6 @@
+- [x] Apply linker workaround for `UIViewLayoutRegion` in `shared/build.gradle.kts`
+- [x] Verify build by linking the iOS framework
+- [x] Apply linker workaround in `iosApp/Configuration/Config.xcconfig` (Initial attempt)
+- [x] Apply linker workaround directly in `iosApp/iosApp.xcodeproj/project.pbxproj`
+- [x] Clean up `iosApp/Configuration/Config.xcconfig`
+- [x] Create walkthrough
