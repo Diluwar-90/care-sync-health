@@ -1,32 +1,32 @@
-# Walkthrough: Fixed iOS Linker Error (UIViewLayoutRegion) - Final Fix
+# Walkthrough - Fixed Platform SDK 36.1 Error across All Modules
 
-I have applied the final fix for the `Undefined symbol: _OBJC_CLASS_$_UIViewLayoutRegion` error. The linker flag is now applied directly to the Xcode project's target settings, ensuring it takes effect for the `iosApp` target.
+I have resolved the build failure caused by the invalid `compileSdk` version `36.1` in the following modules:
+- `appointment`
+- `authentication`
+- `database`
+- `doctor`
+- `features`
+- `network`
+- `patient`
 
 ## Changes Made
 
-### Xcode Project
+### Build Configuration
 
-#### [iosApp/iosApp.xcodeproj/project.pbxproj](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/iosApp/iosApp.xcodeproj/project.pbxproj)
-I added the `OTHER_LDFLAGS` setting directly to the `iosApp` target's Debug and Release configurations. This ensures the Xcode linker ignores the missing `UIViewLayoutRegion` symbol.
+I updated the `build.gradle.kts` for each module to use the project-wide SDK versions defined in `libs.versions.toml`.
 
-```pbxproj
-OTHER_LDFLAGS = "$(inherited) -Wl,-U,_OBJC_CLASS_$_UIViewLayoutRegion";
+For each module, I replaced the problematic `compileSdk { version = release(36) { minorApiLevel = 1 } }` block with:
+```kotlin
+compileSdk = libs.versions.android.compileSdk.get().toInt()
+minSdk = libs.versions.android.minSdk.get().toInt()
 ```
 
-#### [iosApp/Configuration/Config.xcconfig](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/iosApp/Configuration/Config.xcconfig)
-Removed the previous `OTHER_LDFLAGS` workaround to keep the configuration clean and avoid inheritance conflicts.
-
-### Shared Module
-
-#### [shared/build.gradle.kts](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/shared/build.gradle.kts)
-Maintained the `linkerOpts` in the Kotlin framework for consistency during the framework generation phase.
+This ensures that all modules are using a valid SDK version (`36`) and are consistent with the rest of the project.
 
 ## Verification Results
 
-### Manual Verification Required
-> [!IMPORTANT]
-> 1. Open the project in Xcode.
-> 2. Perform a **Clean Build** (`Cmd+Shift+K`).
-> 3. Build the project (`Cmd+B`).
+### Automated Tests
+- **Gradle Sync**: Successfully synchronized the project.
+- **Build**: Successfully executed `:androidApp:assembleDebug`, which verifies that all sub-projects are correctly configured and buildable.
 
-The linker error should now be resolved because the instruction to ignore the symbol is explicitly set at the target level in the Xcode project.
+The project is now in a stable and buildable state.

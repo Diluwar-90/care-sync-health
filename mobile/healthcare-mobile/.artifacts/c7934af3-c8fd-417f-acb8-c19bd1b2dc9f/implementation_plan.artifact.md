@@ -1,27 +1,28 @@
-# Implementation Plan - Revised Fix for iOS Linker Error
+# Implementation Plan - Fix Platform SDK 36.1 Error in Multiple Modules
 
-The previous fix in `Config.xcconfig` might not have been correctly inherited by the app target. I will now apply the linker flags directly to the Xcode project's build settings for the `iosApp` target to ensure they are used during the final link phase.
+The project is failing to build because several newly added modules (`appointment`, `authentication`, `database`, `doctor`, `features`, `network`, `patient`) are using an invalid `compileSdk` version (`36.1`) which is not available in the Android SDK. This happened because they were likely created using a template that included a `release(36) { minorApiLevel = 1 }` block.
 
 ## Proposed Changes
 
-### [Component Name] Xcode Project
+### Build Configuration
 
-#### [MODIFY] [project.pbxproj](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/iosApp/iosApp.xcodeproj/project.pbxproj)
-- Add `OTHER_LDFLAGS` to the `iosApp` target build settings (both Debug and Release configurations).
-- The flag `-Wl,-U,_OBJC_CLASS_$_UIViewLayoutRegion` will tell the linker to treat this specific symbol as undefined, allowing the build to complete on Xcode 16.2.
+I will update the `build.gradle.kts` files for all affected modules to use the standard `compileSdk` and `minSdk` versions from the version catalog (`libs.versions.toml`), which are already set correctly to `36` and `24` respectively.
 
-#### [MODIFY] [Config.xcconfig](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/iosApp/Configuration/Config.xcconfig)
-- Clean up the previous `OTHER_LDFLAGS` attempt to avoid conflicts.
+#### [MODIFY] [appointment/build.gradle.kts](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/appointment/build.gradle.kts)
+#### [MODIFY] [authentication/build.gradle.kts](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/authentication/build.gradle.kts)
+#### [MODIFY] [database/build.gradle.kts](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/database/build.gradle.kts)
+#### [MODIFY] [doctor/build.gradle.kts](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/doctor/build.gradle.kts)
+#### [MODIFY] [features/build.gradle.kts](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/features/build.gradle.kts)
+#### [MODIFY] [network/build.gradle.kts](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/network/build.gradle.kts)
+#### [MODIFY] [patient/build.gradle.kts](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/patient/build.gradle.kts)
 
-### [Component Name] Shared Module
-
-#### [MODIFY] [build.gradle.kts](file:///Users/diluwar/development/care-sync-health/mobile/healthcare-mobile/shared/build.gradle.kts)
-- Ensure the Kotlin framework also has the linker flag for consistency.
-
----
+Each file will be updated as follows:
+- Remove the `compileSdk { ... }` block.
+- Replace it with `compileSdk = libs.versions.android.compileSdk.get().toInt()`.
+- Replace `minSdk = 24` with `minSdk = libs.versions.android.minSdk.get().toInt()`.
 
 ## Verification Plan
 
-### Manual Verification
-- **Xcode Build**: Run a clean build in Xcode.
-- **Runtime**: Verify the app launches on an iOS 18.2 simulator (or whatever version is being used).
+### Automated Tests
+- Run Gradle Sync to ensure all modules are correctly configured.
+- Run `./gradlew assembleDebug` to verify that the build succeeds across all modules.

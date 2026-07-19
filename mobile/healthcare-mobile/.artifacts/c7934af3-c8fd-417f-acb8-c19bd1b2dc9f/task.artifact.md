@@ -1,6 +1,10 @@
-- [x] Apply linker workaround for `UIViewLayoutRegion` in `shared/build.gradle.kts`
-- [x] Verify build by linking the iOS framework
-- [x] Apply linker workaround in `iosApp/Configuration/Config.xcconfig` (Initial attempt)
-- [x] Apply linker workaround directly in `iosApp/iosApp.xcodeproj/project.pbxproj`
-- [x] Clean up `iosApp/Configuration/Config.xcconfig`
-- [x] Create walkthrough
+- [x] Fix `compileSdk` in `appointment/build.gradle.kts`
+- [x] Fix `compileSdk` in `authentication/build.gradle.kts`
+- [x] Fix `compileSdk` in `database/build.gradle.kts`
+- [x] Fix `compileSdk` in `doctor/build.gradle.kts`
+- [x] Fix `compileSdk` in `features/build.gradle.kts`
+- [x] Fix `compileSdk` in `network/build.gradle.kts`
+- [x] Fix `compileSdk` in `patient/build.gradle.kts`
+- [x] Verify Gradle Sync
+- [x] Verify Build (`./gradlew assembleDebug`)
+- [x] Create Walkthrough
