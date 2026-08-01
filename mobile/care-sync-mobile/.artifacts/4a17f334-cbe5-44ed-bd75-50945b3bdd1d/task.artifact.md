@@ -1,4 +1,0 @@
-- `[ ]` Modify `shared/build.gradle.kts` to configure `androidLibrary` and `compose.resources`
-- `[ ]` Update `shared/src/commonMain/kotlin/com/caresync/health/App.kt` imports
-- `[ ]` Run Gradle sync
-- `[ ]` Verify build with `./gradlew :androidApp:assembleDebug`

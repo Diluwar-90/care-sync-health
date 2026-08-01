@@ -1,3 +1,0 @@
-- [ ] Update AGP version in `libs.versions.toml`
-- [ ] Run Gradle sync
-- [ ] Verify build with `./gradlew assembleDebug`

@@ -1,5 +1,0 @@
-- [ ] Fix environment variable conflict in `settings.gradle.kts`
-- [ ] Upgrade Kotlin and Compose versions in `gradle/libs.versions.toml`
-- [ ] Increase Gradle memory in `gradle.properties`
-- [ ] Verify build succeeds for `:shared:compileAndroidMain`
-- [ ] Verify build succeeds for `:androidApp:assembleDebug`
