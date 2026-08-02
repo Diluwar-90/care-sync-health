@@ -11,7 +11,10 @@ from app.api.v1.schemas import (
     ReadinessResponse,
 )
 
+from app.modules.patient.api.router import router as patient_router
+
 router = APIRouter(prefix="/api/v1", tags=["Health"])
+router.include_router(patient_router)
 
 @router.get("/", summary="API Information")
 async def api_information() -> ApiInformationResponse:
