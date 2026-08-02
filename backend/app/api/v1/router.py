@@ -35,10 +35,15 @@ async def health_check() -> HealthResponse:
     settings = get_settings()
     uptime = datetime.now(UTC) - settings.app.started_at.replace(tzinfo=UTC)
 
+#     logger.info(
+#     "health_check_requested",
+#     endpoint="/api/v1/health",
+#     method="GET",
+    
+# )
     logger.info(
-    "health_check_requested",
-    endpoint="/api/v1/health",
-    method="GET",
+    "database_configuration_loaded",
+    database_url=settings.database.url,
 )
     logger.debug(
     "health_check_debug",

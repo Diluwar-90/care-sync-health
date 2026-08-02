@@ -5,8 +5,12 @@ description = "Production-grade FastAPI backend for the Care Sync Health platfor
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 dependencies = [
+    "alembic>=1.18.5",
+    "asyncpg>=0.31.0",
     "fastapi>=0.141.1",
+    "greenlet>=3.5.4",
     "pydantic-settings>=2.14.2",
+    "sqlalchemy>=2.0.51",
     "structlog>=26.1.0",
     "uvicorn>=0.52.1",
 ]

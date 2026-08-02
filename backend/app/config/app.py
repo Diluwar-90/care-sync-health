@@ -53,3 +53,16 @@ class AppSettings(BaseSettings):
     )
 
     docs_url: str = "/docs"
+
+class DatabaseSettings(BaseSettings):
+    """Database configuration."""
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+    )
+
+    url: str = Field(
+        default="postgresql+asyncpg://postgres:postgres@localhost:5433/care_sync_health",
+        alias="DATABASE_URL",
+    )
