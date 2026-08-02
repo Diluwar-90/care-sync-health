@@ -1,18 +1,13 @@
 from pydantic import Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from app.config.base import BaseAppSettings
 
 from app.config.environment import Environment
 from typing import Literal
 from datetime import datetime
 
     
-class AppSettings(BaseSettings):
+class AppSettings(BaseAppSettings):
     """Application configuration."""
-
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        extra="ignore",
-    )
 
     env: Environment = Field(
         default=Environment.DEVELOPMENT,
@@ -54,13 +49,8 @@ class AppSettings(BaseSettings):
 
     docs_url: str = "/docs"
 
-class DatabaseSettings(BaseSettings):
+class DatabaseSettings(BaseAppSettings):
     """Database configuration."""
-
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        extra="ignore",
-    )
 
     url: str = Field(
         default="postgresql+asyncpg://postgres:postgres@localhost:5433/care_sync_health",

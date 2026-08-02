@@ -7,8 +7,8 @@ class Settings:
     """Root application settings."""
 
     def __init__(self) -> None:
-        self.app = AppSettings()
-        self.database = DatabaseSettings()
+        self.app: AppSettings = AppSettings()
+        self.database: DatabaseSettings = DatabaseSettings()
 
 @lru_cache
 def get_settings() -> Settings:
