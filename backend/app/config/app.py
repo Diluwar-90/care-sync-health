@@ -2,8 +2,10 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.config.environment import Environment
+from typing import Literal
+from datetime import datetime
 
-
+    
 class AppSettings(BaseSettings):
     """Application configuration."""
 
@@ -21,3 +23,33 @@ class AppSettings(BaseSettings):
         default=True,
         alias="APP_DEBUG",
     )
+
+    log_level: Literal[
+         "DEBUG",
+        "INFO",
+        "WARNING",
+        "ERROR",
+        "CRITICAL",
+    ] = Field(
+    default="INFO",
+    alias="APP_LOG_LEVEL",
+    )
+
+    app_name: str = Field(
+    default="Care Sync Health API",
+    )
+
+    app_description: str = Field(
+        default="Production-grade FastAPI backend for the Care Sync Health platform.",
+    )
+
+    app_version: str = Field(
+      default="0.1.0",
+    )
+
+    started_at: datetime = Field(
+    default_factory=datetime.utcnow,
+    
+    )
+
+    docs_url: str = "/docs"
